@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: Django 與可擴展網頁應用開發準則，包含 RESTful API 開發
 globs: ["**/django/**/*.py", "**/*.py", "**/apps/**/*.py", "**/models.py", "**/views.py", "**/urls.py", "**/serializers.py", "**/admin.py", "**/migrations/**/*.py", "**/manage.py"]
 alwaysApply: false

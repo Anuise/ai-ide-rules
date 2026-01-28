@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: 適用於 React, TypeScript, Tailwind CSS 的綜合開發指南。涵蓋性能優化、命名規範、錯誤處理與組件架構。
 globs: ["**/*.{ts,tsx,js,jsx}"]
 alwaysApply: false

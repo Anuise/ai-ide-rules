@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: ViewComfy API 整合與 ComfyUI 工作流程開發準則，涵蓋 FastAPI 整合與 ComfyUI 工作流程執行
 globs: ["**/viewcomfy/**/*.py", "**/*.py", "**/comfyui/**/*.py", "**/*viewcomfy*.py", "**/*comfy*.py", "**/workflow*.json"]
 alwaysApply: false

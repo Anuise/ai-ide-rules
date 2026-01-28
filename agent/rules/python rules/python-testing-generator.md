@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: Python 測試案例產生器，用於為函式產生獨特、多樣且直觀的單元測試
 globs: ["**/tests/**/*.py", "**/*.py", "**/test_*.py", "**/*_test.py"]
 alwaysApply: false

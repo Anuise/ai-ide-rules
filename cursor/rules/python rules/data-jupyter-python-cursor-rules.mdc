@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: 資料分析與 Jupyter Notebook 開發準則，涵蓋 pandas、matplotlib、seaborn 和 numpy
 globs: ["**/*.ipynb", "**/*.py", "**/data/**/*.py", "**/analysis/**/*.py", "**/notebooks/**/*.py", "**/jupyter/**/*.py"]
 alwaysApply: false

@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: 適用於 TypeScript 專案的全面編碼準則與最佳實踐，涵蓋架構、命名與性能。
 globs: ["**/*.{ts,tsx}"]
 alwaysApply: false

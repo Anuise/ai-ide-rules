@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: 綜合 REST API 開發與設計最佳實踐，適用於所有 API 相關開發工作，確保一致性、安全與效能。
 globs: ["**/api/**/*", "**/routes/**/*", "**/controllers/**/*", "**/services/**/*", "**/*.dto.ts", "**/models/**/*", "**/handlers/**/*"]
 alwaysApply: false

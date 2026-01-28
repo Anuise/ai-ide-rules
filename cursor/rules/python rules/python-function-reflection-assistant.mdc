@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: Python 函式反思與測試產生助手，用於分析與改進函式實作
 globs: ["**/tests/**/*.py", "**/*.py", "**/test_*.py", "**/*_test.py"]
 alwaysApply: false

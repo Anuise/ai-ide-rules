@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: Flask 與可擴展 API 開發準則
 globs: ["**/flask/**/*.py", "**/*.py", "**/blueprints/**/*.py", "**/app.py", "**/routes/**/*.py", "**/*flask*.py"]
 alwaysApply: false

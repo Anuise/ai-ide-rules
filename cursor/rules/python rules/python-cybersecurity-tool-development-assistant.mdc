@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: Python 網路安全工具開發準則，涵蓋掃描器、列舉器與攻擊工具
 globs: ["**/scanners/**/*.py", "**/*.py", "**/enumerators/**/*.py", "**/attackers/**/*.py", "**/security/**/*.py", "**/pentest/**/*.py", "**/cybersecurity/**/*.py"]
 alwaysApply: false

@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: Odoo 與企業業務應用開發準則，涵蓋 ORM、XML 視圖與 Web 控制器
 globs: ["**/odoo/**/*.py", "**/*.py", "**/models/**/*.py", "**/controllers/**/*.py", "**/wizards/**/*.py", "**/__manifest__.py", "**/*.xml"]
 alwaysApply: false

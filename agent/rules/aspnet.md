@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: 適用於 .NET 與 ASP.NET Core 開發的全方位程式碼準則，涵蓋 C# 12+、Minimal APIs、Clean Architecture 與效能優化。
 globs: ["**/*.cs", "**/*.cshtml", "**/*.razor", "**/*.csproj", "**/appsettings.json"]
 alwaysApply: false

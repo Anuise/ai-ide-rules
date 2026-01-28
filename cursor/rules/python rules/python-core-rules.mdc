@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: Python 核心開發準則與通用最佳實踐，適用於所有 Python 專案
 globs: ["**/*.py"]
 alwaysApply: false

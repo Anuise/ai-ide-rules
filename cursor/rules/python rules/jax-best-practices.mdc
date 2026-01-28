@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: JAX 最佳實踐與數值計算準則，涵蓋自動微分、JIT 編譯與向量化
 globs: ["**/jax/**/*.py", "**/*.py", "**/*jax*.py", "**/numerical/**/*.py"]
 alwaysApply: false

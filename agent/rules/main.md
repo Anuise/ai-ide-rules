@@ -1,5 +1,5 @@
 ---
-trigger: "Always On"
+trigger: always_on
 description: 全域通用開發規範
 globs: ["**/*"]
 alwaysApply: true

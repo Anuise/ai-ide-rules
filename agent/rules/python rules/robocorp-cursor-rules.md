@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: RoboCorp RPA 與可擴展自動化開發準則，涵蓋任務定義與 RPA Framework
 globs: ["**/robocorp/**/*.py", "**/*.py", "**/rpa/**/*.py", "**/tasks/**/*.py", "**/robot.yaml"]
 alwaysApply: false

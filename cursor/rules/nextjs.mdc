@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: 適用於 Next.js App Router、TypeScript、Tailwind CSS 的綜合開發指南與規則，涵蓋性能、SEO 與架構最佳實踐。
 globs: ["**/*.{ts,tsx,js,jsx}"]
 alwaysApply: false

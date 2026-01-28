@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: FastAPI 與可擴展 API 開發準則，包含微服務架構與 serverless 環境
 globs: ["**/api/**/*.py", "**/*.py", "**/routes/**/*.py", "**/routers/**/*.py", "**/main.py", "**/*fastapi*.py"]
 alwaysApply: false

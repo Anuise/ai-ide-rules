@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: 深度學習、transformers、diffusion 模型與 LLM 開發準則，涵蓋 PyTorch、Diffusers、Transformers 和 Gradio
 globs: ["**/models/**/*.py", "**/*.py", "**/training/**/*.py", "**/inference/**/*.py", "**/*model*.py", "**/*train*.py", "**/*inference*.py"]
 alwaysApply: false

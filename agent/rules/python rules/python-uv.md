@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: Python UV 相依性管理器使用準則，定義使用 uv 管理 Python 相依性的嚴格指南
 globs: ["**/pyproject.toml", "**/uv.lock", "**/requirements.txt", "**/uv.toml"]
 alwaysApply: false

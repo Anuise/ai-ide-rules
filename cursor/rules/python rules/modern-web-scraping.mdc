@@ -1,5 +1,5 @@
 ---
-trigger: "Glob"
+trigger: glob
 description: 現代網頁爬蟲與資料擷取開發準則，涵蓋 requests、BeautifulSoup、selenium、jina、firecrawl、agentQL 和 multion
 globs: ["**/scrapers/**/*.py", "**/*.py", "**/scraping/**/*.py", "**/crawlers/**/*.py", "**/*scraper*.py", "**/*crawl*.py"]
 alwaysApply: false
