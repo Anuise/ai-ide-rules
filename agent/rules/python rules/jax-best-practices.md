@@ -1,0 +1,89 @@
+---
+trigger: "Glob"
+description: JAX 最佳實踐與數值計算準則，涵蓋自動微分、JIT 編譯與向量化
+globs: ["**/jax/**/*.py", "**/*.py", "**/*jax*.py", "**/numerical/**/*.py"]
+alwaysApply: false
+---
+
+# JAX 最佳實踐
+
+> 參考通用 Python 規則：`python-core-rules.md`
+
+你是一位精通 JAX、Python、NumPy 和機器學習的專家。
+
+## JAX-最佳實踐
+
+### 函式式 API
+
+- **Functional API**：利用 JAX 的函式式 API 進行數值計算
+- **jax.numpy**：使用 `jax.numpy` 而非標準 NumPy 以確保相容性
+- **Automatic Differentiation**：使用 `jax.grad` 和 `jax.value_and_grad` 進行自動微分
+  - 編寫適合微分的函式（即計算梯度時輸入為陣列、輸出為純量的函式）
+- **JIT Compilation**：應用 `jax.jit` 進行即時編譯以優化效能
+  - 確保函式與 JIT 相容（如避免 Python 副作用和不支援的操作）
+- **Vectorization**：使用 `jax.vmap` 在批次維度上向量化函式
+  - 用 `vmap` 替換顯式迴圈進行陣列操作
+- **Immutability**：避免就地修改；JAX 陣列是不可變的
+  - 避免修改陣列的操作
+- **Pure Functions**：使用無副作用的純函式以確保與 JAX 轉換的相容性
+
+## 優化和效能
+
+### JIT 相容性
+
+- **JIT-Compatible Code**：編寫與 JIT 編譯相容的程式碼；避免 JIT 無法編譯的 Python 構造
+- **Control Flow**：最小化 Python 迴圈和動態控制流的使用；使用 JAX 的控制流操作（如 `jax.lax.scan`、`jax.lax.cond`、`jax.lax.fori_loop`）
+- **Memory Optimization**：透過利用高效的資料結構和避免不必要的副本優化記憶體使用
+- **Data Types**：使用適當的資料型別（如 `float32`）優化效能和記憶體使用
+- **Profiling**：使用效能分析工具識別瓶頸並相應優化
+
+## 錯誤處理和驗證
+
+- **Input Validation**：在計算前驗證輸入形狀和資料型別
+  - 對無效輸入使用斷言或拋出例外
+- **Error Messages**：為無效輸入或計算錯誤提供資訊豐富的錯誤訊息
+- **Exception Handling**：優雅地處理例外以防止執行期間崩潰
+
+## 測試和除錯
+
+- **Unit Tests**：使用 `pytest` 等測試框架為函式編寫單元測試
+  - 確保數學計算和轉換的正確性
+- **Debugging JIT**：使用 `jax.debug.print` 除錯 JIT 編譯的函式
+- **Side Effects**：注意副作用和狀態操作；JAX 期望轉換使用純函式
+
+## JAX 轉換
+
+### 純函式
+
+- **Side-Effect Free**：確保函式無副作用以相容 `jit`、`grad`、`vmap` 等
+
+### 控制流
+
+- **JAX Control Flow**：在 JIT 編譯的函式中使用 JAX 的控制流操作（`jax.lax.cond`、`jax.lax.scan`）而非 Python 控制流
+
+### 隨機數生成
+
+- **PRNG System**：使用 JAX 的 PRNG 系統；明確管理隨機金鑰
+
+### 並行性
+
+- **Parallelism**：在可用時利用 `jax.pmap` 在多個裝置上進行並行計算
+
+## 效能提示
+
+### 基準測試
+
+- **Benchmarking**：使用 `timeit` 和 JAX 的內建基準測試工具
+
+### 避免常見陷阱
+
+- **Data Transfers**：注意 CPU 和 GPU 之間不必要的資料傳輸
+- **Compiling Overhead**：注意編譯開銷；盡可能重用 JIT 編譯的函式
+
+## 最佳實踐
+
+- **Immutability**：擁抱函式式程式設計原則；避免可變狀態
+- **Reproducibility**：仔細管理隨機種子以獲得可重現的結果
+- **Version Control**：追蹤函式庫版本（`jax`、`jaxlib` 等）以確保相容性
+
+參考 JAX 官方文件了解使用 JAX 轉換和 API 的最新最佳實踐：[JAX Documentation](https://jax.readthedocs.io)

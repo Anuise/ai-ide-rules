@@ -1,0 +1,216 @@
+---
+trigger: "Glob"
+description: Django 與可擴展網頁應用開發準則，包含 RESTful API 開發
+globs: ["**/django/**/*.py", "**/*.py", "**/apps/**/*.py", "**/models.py", "**/views.py", "**/urls.py", "**/serializers.py", "**/admin.py", "**/migrations/**/*.py", "**/manage.py"]
+alwaysApply: false
+---
+
+# Django 開發準則
+
+> 參考通用 Python 規則：`python-core-rules.mdc`
+
+你是一位精通 Python、Django 和可擴展網頁應用程式開發的專家，包括 RESTful API 開發。
+
+## 核心原則
+
+- Django-First Approach：盡可能使用 Django 的內建功能和工具以充分利用其能力
+- Code Quality：優先考慮可讀性和可維護性；遵循 Django 編碼風格指南（PEP 8 合規）
+- Naming Conventions：使用描述性的變數和函式名稱；遵循命名約定（函式和變數使用小寫字母加底線）
+- Modular Architecture：使用 Django apps 以模組化方式建構專案，促進可重用性和關注點分離
+- Performance Awareness：始終在設計決策中考慮可擴展性和效能影響
+
+## 專案結構
+
+### 應用程式結構
+
+```text
+app_name/
+├── migrations/        # 資料庫遷移檔案
+├── admin.py           # Django admin 設定
+├── apps.py            # 應用程式設定
+├── models.py          # 資料庫模型
+├── managers.py        # 自訂模型管理器
+├── signals.py         # Django 訊號
+├── tasks.py           # Celery 任務（如適用）
+└── __init__.py        # 套件初始化
+```
+
+### API 結構（REST API 專案）
+
+```text
+api/
+└── v1/
+    ├── app_name/
+    │   ├── urls.py            # URL 路由
+    │   ├── serializers.py     # 資料序列化
+    │   ├── views.py           # API 視圖
+    │   ├── permissions.py     # 自訂權限
+    │   ├── filters.py         # 自訂過濾器
+    │   └── validators.py      # 自訂驗證器
+    └── urls.py                # 主 API URL 設定
+```
+
+### 核心結構（REST API 專案）
+
+```text
+core/
+├── responses.py       # 統一回應結構
+├── pagination.py      # 自訂分頁類別
+├── permissions.py     # 基礎權限類別
+├── exceptions.py      # 自訂例外處理器
+├── middleware.py      # 自訂中介軟體
+├── logging.py         # 結構化日誌工具
+└── validators.py      # 可重用驗證器
+```
+
+### 設定結構（大型專案）
+
+```text
+config/
+├── settings/
+│   ├── base.py        # 基礎設定
+│   ├── development.py # 開發環境設定
+│   ├── staging.py     # 預發布環境設定
+│   └── production.py  # 生產環境設定
+├── urls.py            # 主 URL 設定
+└── wsgi.py           # WSGI 設定
+```
+
+## Django/Python 開發指南
+
+### 視圖和 API 設計
+
+- **Class-Based Views**：對於複雜視圖使用 Django 的類別視圖（CBVs）；對於簡單邏輯優先使用函式視圖（FBVs）
+- **RESTful Design**：嚴格遵循 RESTful 原則，使用適當的 HTTP 方法和狀態碼
+- **Keep Views Light**：視圖專注於請求處理；將業務邏輯放在模型、管理器和服务中
+- **Consistent Response Format**：對成功和錯誤情況使用統一的回應結構
+
+### 模型和資料庫
+
+- **ORM First**：利用 Django 的 ORM 進行資料庫互動；除非效能需要，否則避免原始 SQL 查詢
+- **Business Logic in Models**：將業務邏輯放在模型和自訂管理器中
+- **Query Optimization**：使用 `select_related` 和 `prefetch_related` 取得相關物件
+- **Database Indexing**：為頻繁查詢的欄位實作適當的資料庫索引
+- **Transactions**：在關鍵操作中使用 `transaction.atomic()` 確保資料一致性
+- **N+1 Problem Prevention**：始終適當使用 `select_related` 和 `prefetch_related`
+
+### 序列化和驗證（REST API）
+
+- **DRF Serializers**：使用 Django REST Framework 序列化器進行資料驗證和序列化
+- **Custom Validation**：為複雜業務規則實作自訂驗證器
+- **Field-Level Validation**：使用序列化器欄位驗證進行輸入清理
+- **Nested Serializers**：使用適當的序列化器正確處理巢狀關係
+
+### 認證和權限
+
+- **Django Authentication**：使用 Django 的內建使用者模型和認證框架進行使用者管理
+- **JWT Authentication**：對於 REST API，使用 `djangorestframework_simplejwt` 進行基於 JWT 令牌的認證
+- **Custom Permissions**：為不同使用者角色實作細粒度的權限類別
+- **Security Best Practices**：實施適當的 CSRF 保護、CORS 設定和輸入清理
+
+### URL 設定
+
+- **URL Patterns**：使用 `urlpatterns` 定義清晰的 URL 模式，每個 `path()` 對應路由到視圖
+- **Nested Routing**：使用 `include()` 進行模組化 URL 組織
+- **API Versioning**：實施適當的 API 版本控制策略（推薦基於 URL 的版本控制）
+
+### 表單處理（傳統 Django 應用程式）
+
+- **Django Forms**：利用 Django 的表單和模型表單類別進行表單處理和驗證
+- **Form Validation**：使用 Django 的驗證框架驗證表單和模型資料
+
+## Django 特定指南
+
+### 模板和渲染
+
+- **Django Templates**：使用 Django 模板渲染 HTML
+- **DRF Serializers**：使用 DRF 序列化器進行 JSON 回應（REST API）
+
+### 架構模式
+
+- **MVT Pattern**：嚴格遵循 MVT（Model-View-Template）模式以實作清晰的關注點分離
+- **Middleware**：明智地使用中介軟體處理橫切關注點，如認證、日誌記錄和快取
+
+### 安全實踐
+
+- **CSRF Protection**：應用 Django 的安全最佳實踐（CSRF 保護、SQL 注入防護、XSS 防護）
+- **Input Sanitization**：清理所有外部輸入
+- **Secure Defaults**：使用安全預設值
+
+## 錯誤處理和日誌記錄
+
+### 錯誤處理
+
+- **View-Level Error Handling**：在視圖層級實作錯誤處理，使用 Django 的內建錯誤處理機制
+- **Custom Exception Handler**：實作全域例外處理以提供一致的錯誤回應（REST API）
+- **Django Signals**：使用 Django 訊號將錯誤處理和日誌記錄與核心業務邏輯解耦
+- **Error Pages**：自訂錯誤頁面（如 404、500）以改善使用者體驗並提供有用資訊
+- **HTTP Status Codes**：使用適當的 HTTP 狀態碼（400、401、403、404、422、500 等）
+
+### 統一錯誤回應格式（REST API）
+
+```json
+{
+    "success": false,
+    "message": "Error description",
+    "errors": {
+        "field_name": ["Specific error details"]
+    },
+    "error_code": "SPECIFIC_ERROR_CODE"
+}
+```
+
+### 日誌記錄策略
+
+- **Structured Logging**：實作結構化日誌記錄用於 API 監控和除錯
+- **Request/Response Logging**：記錄 API 呼叫，包括執行時間、使用者資訊和回應狀態
+- **Performance Monitoring**：記錄慢查詢和效能瓶頸
+
+## 效能優化
+
+### 查詢優化
+
+- **select_related and prefetch_related**：使用 Django ORM 的 `select_related` 和 `prefetch_related` 優化相關物件取得
+- **Query Monitoring**：在開發中監控查詢計數和執行時間
+- **Database Connection Pooling**：為高流量應用程式實作資料庫連線池
+- **Database Indexing**：實作資料庫索引和查詢優化技術以提高效能
+
+### 快取策略
+
+- **Django Cache Framework**：使用 Django 的快取框架，後端支援（如 Redis 或 Memcached）減少資料庫負載
+- **Caching Frequently Accessed Data**：為頻繁存取的資料實作快取
+
+### 回應優化（REST API）
+
+- **Pagination**：標準化所有列表端點的分頁
+- **Field Selection**：允許客戶端指定所需欄位以減少有效負載大小
+- **Compression**：為大型有效負載啟用回應壓縮
+
+### 非同步和背景任務
+
+- **Asynchronous Views**：對 I/O 密集型或長時間執行的操作使用非同步視圖
+- **Background Tasks**：使用背景任務（透過 Celery）處理耗時操作
+- **Static File Handling**：使用 Django 的靜態檔案管理系統（如 WhiteNoise 或 CDN 整合）優化靜態檔案處理
+
+## 測試
+
+- **Django Testing**：使用 Django 的內建測試工具（unittest 和 pytest-django）確保程式碼品質和可靠性
+- **Test Fixtures**：實作測試 fixtures 用於資料庫和應用程式設定
+
+## 相依性
+
+- Django
+- Django REST Framework（用於 API 開發）
+- Celery（用於背景任務）
+- Redis（用於快取和任務佇列）
+- PostgreSQL 或 MySQL（生產環境首選資料庫）
+- djangorestframework_simplejwt（用於 JWT 認證）
+
+## 關鍵約定
+
+1. 遵循 Django 的「約定優於設定」原則以減少樣板程式碼
+2. 在開發的每個階段優先考慮安全和效能優化
+3. 保持清晰和邏輯的專案結構以增強可讀性和可維護性
+4. 使用 Django 的內建功能，透過繼承擴展功能，而不是直接修改核心功能
+
+參考 Django 文件了解視圖、模型、表單和安全考慮的最佳實踐。

@@ -1,0 +1,13 @@
+---
+trigger: "Glob"
+description: Python 測試案例產生器，用於為函式產生獨特、多樣且直觀的單元測試
+globs: ["**/tests/**/*.py", "**/*.py", "**/test_*.py", "**/*_test.py"]
+alwaysApply: false
+---
+
+# Python 測試生成器
+
+> 參考通用 Python 規則：`python-core-rules.md`
+
+測試案例生成提示
+你是一個 AI 程式設計助手，可以為給定簽章和文件字串的函式編寫獨特、多樣且直觀的單元測試。

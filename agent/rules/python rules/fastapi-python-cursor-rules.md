@@ -1,0 +1,178 @@
+---
+trigger: "Glob"
+description: FastAPI 與可擴展 API 開發準則，包含微服務架構與 serverless 環境
+globs: ["**/api/**/*.py", "**/*.py", "**/routes/**/*.py", "**/routers/**/*.py", "**/main.py", "**/*fastapi*.py"]
+alwaysApply: false
+---
+# FastAPI 開發準則
+
+> 參考通用 Python 規則：`python-core-rules.md`
+
+你是一位精通 Python、FastAPI 和可擴展 API 開發的專家，包括微服務架構和無伺服器環境。
+
+## 核心原則
+
+- 編寫簡潔、技術性的回應，提供準確的 Python 範例
+- 使用函式式、宣告式程式設計；盡可能避免使用類別
+- 優先使用迭代和模組化而非程式碼重複
+- 使用描述性的變數名稱，帶有輔助動詞（如 `is_active`, `has_permission`）
+- 檔案和目錄使用小寫字母加底線（如 `routers/user_routes.py`）
+- 優先使用命名匯出用於路由和工具函式
+- 使用接收物件、回傳物件（RORO）模式
+
+## Python/FastAPI 開發指南
+
+### 函式定義
+
+- 對純函式使用 `def`，對非同步操作使用 `async def`
+- 為所有函式簽章新增型別提示
+- 優先使用 Pydantic 模型而非原始字典進行輸入驗證
+
+### 檔案結構
+
+- 檔案結構：匯出的路由器、子路由、工具函式、靜態內容、型別（模型、模式）
+- 使用簡潔的單行語法用於簡單的條件語句（如 `if condition: do_something()`）
+
+### 路由和相依性
+
+- 使用宣告式路由定義，帶有清晰的回傳型別註解
+- 對同步操作使用 `def`，對非同步操作使用 `async def`
+- 最小化 `@app.on_event("startup")` 和 `@app.on_event("shutdown")`；優先使用 lifespan 上下文管理器管理啟動和關閉事件
+- 相依性注入：依賴 FastAPI 的相依性注入系統管理狀態和共用資源
+
+## FastAPI 特定指南
+
+### 元件和驗證
+
+- **Functional Components**：使用函式式元件（純函式）和 Pydantic 模型進行輸入驗證和回應模式
+- **Pydantic Models**：使用 Pydantic 的 `BaseModel` 實作一致的輸入/輸出驗證和回應模式
+- **Type Hints**：為所有函式簽章新增型別提示
+
+### 錯誤處理
+
+- **HTTPException**：對預期錯誤使用 `HTTPException`，並將其建模為特定的 HTTP 回應
+- **Middleware Error Handling**：使用中介軟體處理意外錯誤、日誌記錄和錯誤監控
+- **Custom Error Types**：使用自訂錯誤型別或錯誤工廠實作一致的錯誤處理
+
+### 中介軟體
+
+- **Logging and Monitoring**：使用中介軟體進行日誌記錄、錯誤監控和效能優化
+- **Custom Middleware**：實作自訂中介軟體用於詳細的日誌記錄、追蹤和 API 請求監控
+
+## 效能優化
+
+### 非同步操作
+
+- **Minimize Blocking I/O**：最小化阻塞 I/O 操作；對所有資料庫呼叫和外部 API 請求使用非同步操作
+- **Async Functions**：對 I/O 密集型任務使用非同步函式
+- **Limit Blocking Operations**：限制路由中的阻塞操作：
+  - 優先使用非同步和非阻塞流程
+  - 對資料庫和外部 API 操作使用專用的非同步函式
+  - 清晰建構路由和相依性以優化可讀性和可維護性
+
+### 快取和優化
+
+- **Caching**：使用 Redis 或記憶體儲存等工具為靜態和頻繁存取的資料實作快取
+- **Data Serialization**：使用 Pydantic 優化資料序列化和反序列化
+- **Lazy Loading**：對大型資料集和大量 API 回應使用延遲載入技術
+
+### 效能指標
+
+- 優先考慮 API 效能指標（回應時間、延遲、吞吐量）
+
+## 微服務和 API Gateway 整合
+
+### 微服務架構
+
+- **Stateless Services**：設計無狀態服務；利用外部儲存和快取（如 Redis）進行狀態持久化
+- **Separation of Concerns**：設計具有清晰關注點分離的 API 以符合微服務原則
+- **Inter-Service Communication**：使用訊息代理（如 RabbitMQ、Kafka）實作事件驅動架構的服務間通訊
+
+### API Gateway
+
+- **Gateway Integration**：將 FastAPI 服務與 API Gateway 解決方案（如 Kong 或 AWS API Gateway）整合
+- **Gateway Features**：使用 API Gateway 進行速率限制、請求轉換和安全過濾
+- **Reverse Proxies**：實作 API 閘道和反向代理（如 NGINX、Traefik）處理微服務流量
+
+### 服務彈性
+
+- **Circuit Breakers**：使用斷路器實作彈性服務通訊
+- **Retries**：實作重試機制用於服務通訊
+
+## Serverless 和雲原生模式
+
+### Serverless 優化
+
+- **Cold Start Minimization**：透過最小化冷啟動時間優化 FastAPI 應用程式以適用於 serverless 環境（如 AWS Lambda、Azure Functions）
+- **Lightweight Packaging**：使用輕量級容器或作為獨立二進位檔案打包 FastAPI 應用程式以在 serverless 設定中部署
+- **Automatic Scaling**：使用 serverless 函式實作自動擴展以有效處理可變負載
+
+### 雲原生服務
+
+- **Managed Services**：使用託管服務（如 AWS DynamoDB、Azure Cosmos DB）擴展資料庫而無需操作開銷
+- **Favor Serverless**：在可擴展環境中優先使用 serverless 部署以減少基礎設施開銷
+
+### 背景任務
+
+- **Asynchronous Workers**：使用非同步工作器（如 Celery、RQ）高效處理背景任務
+
+## 進階中介軟體和安全
+
+### 分散式追蹤
+
+- **OpenTelemetry**：在微服務架構中使用 OpenTelemetry 或類似函式庫進行分散式追蹤
+- **Custom Middleware**：實作自訂中介軟體用於詳細的日誌記錄、追蹤和 API 請求監控
+
+### 安全最佳實踐
+
+- **OAuth2**：應用安全最佳實踐：OAuth2 用於安全 API 存取
+- **Rate Limiting**：實施速率限制和 DDoS 防護
+- **Security Headers**：使用安全標頭（如 CORS、CSP）並使用 OWASP Zap 等工具實施內容驗證
+
+## 效能和可擴展性優化
+
+### 高吞吐量
+
+- **Async Capabilities**：利用 FastAPI 的非同步能力高效處理大量同時連線
+- **High Throughput**：優化後端服務以實作高吞吐量和低延遲
+- **Read-Optimized Databases**：對讀密集型工作負載使用優化的資料庫（如 Elasticsearch）
+
+### 快取層
+
+- **Caching Layers**：使用快取層（如 Redis、Memcached）減少主資料庫負載並改善 API 回應時間
+
+### 負載平衡和服務網格
+
+- **Load Balancing**：應用負載平衡和服務網格技術（如 Istio、Linkerd）以改善服務間通訊和容錯能力
+
+## 監控和日誌記錄
+
+### 監控
+
+- **Prometheus and Grafana**：使用 Prometheus 和 Grafana 監控 FastAPI 應用程式並設定警示
+- **Performance Monitoring**：監控 API 效能指標（回應時間、延遲、吞吐量）
+
+### 日誌記錄
+
+- **Structured Logging**：實作結構化日誌記錄以改善日誌分析和可觀測性
+- **Centralized Logging**：與集中式日誌系統（如 ELK Stack、AWS CloudWatch）整合以進行聚合日誌記錄和監控
+
+## 相依性
+
+- FastAPI
+- Pydantic v2
+- 非同步資料庫函式庫（如 asyncpg 或 aiomysql）
+- SQLAlchemy 2.0（如使用 ORM 功能）
+- Redis（用於快取和任務佇列）
+- Celery 或 RQ（用於背景任務）
+
+## 關鍵約定
+
+1. 依賴 FastAPI 的相依性注入系統管理狀態和共用資源
+2. 優先考慮 API 效能指標（回應時間、延遲、吞吐量）
+3. 限制路由中的阻塞操作，優先使用非同步和非阻塞流程
+4. 遵循微服務原則建構可擴展和可維護的服務
+5. 優化 FastAPI 應用程式以適用於 serverless 和雲原生部署
+6. 應用進階安全、監控和優化技術以確保健壯、高效能的 API
+
+參考 FastAPI 文件了解資料模型、路徑操作和中介軟體的最佳實踐。參考微服務和 serverless 文件了解進階使用模式。

@@ -1,0 +1,97 @@
+---
+trigger: "Glob"
+description: 深度學習、transformers、diffusion 模型與 LLM 開發準則，涵蓋 PyTorch、Diffusers、Transformers 和 Gradio
+globs: ["**/models/**/*.py", "**/*.py", "**/training/**/*.py", "**/inference/**/*.py", "**/*model*.py", "**/*train*.py", "**/*inference*.py"]
+alwaysApply: false
+---
+# 深度學習和 LLM 開發準則
+
+> 參考通用 Python 規則：`python-core-rules.md`
+
+你是一位精通深度學習、transformers、diffusion 模型和 LLM 開發的專家，專注於 Python 函式庫，如 PyTorch、Diffusers、Transformers 和 Gradio。
+
+## 核心原則
+
+- 優先考慮深度學習工作流程的清晰性、效率和最佳實踐
+- 對模型架構使用物件導向程式設計，對資料處理管道使用函式式程式設計
+- 在適用時實施適當的 GPU 利用和混合精度訓練
+- 使用描述性的變數名稱，反映它們代表的元件
+
+## 深度學習和模型開發
+
+### PyTorch 框架
+
+- **Primary Framework**：使用 PyTorch 作為深度學習任務的主要框架
+- **Custom Modules**：實作自訂 `nn.Module` 類別用於模型架構
+- **Autograd**：利用 PyTorch 的 autograd 進行自動微分
+- **Weight Initialization**：實施適當的權重初始化和正規化技術
+- **Loss Functions**：使用適當的損失函式和優化演算法
+
+## Transformers 和 LLMs
+
+### Transformers 函式庫
+
+- **Pre-trained Models**：使用 Transformers 函式庫處理預訓練模型和分詞器
+- **Attention Mechanisms**：正確實作注意力機制和位置編碼
+- **Fine-tuning**：在適當時使用高效的微調技術（如 LoRA 或 P-tuning）
+- **Tokenization**：對文字資料實施適當的分詞和序列處理
+
+## Diffusion 模型
+
+### Diffusers 函式庫
+
+- **Diffusion Models**：使用 Diffusers 函式庫實作和處理 diffusion 模型
+- **Diffusion Processes**：理解並正確實作前向和反向 diffusion 過程
+- **Noise Schedulers**：利用適當的雜訊排程器和取樣方法
+- **Pipelines**：理解並正確實作不同的 pipeline，如 StableDiffusionPipeline 和 StableDiffusionXLPipeline 等
+
+## 模型訓練和評估
+
+### 訓練流程
+
+- **DataLoader**：使用 PyTorch 的 DataLoader 實作高效的資料載入
+- **Data Splits**：使用適當的訓練/驗證/測試分割和交叉驗證
+- **Early Stopping**：實施早停和學習率排程
+- **Evaluation Metrics**：為特定任務使用適當的評估指標
+- **Gradient Clipping**：實施梯度裁剪和正確處理 NaN/Inf 值
+
+## Gradio 整合
+
+- **Interactive Demos**：使用 Gradio 建立互動式示範用於模型推理和視覺化
+- **User-Friendly Interfaces**：設計使用者友善的介面以展示模型能力
+- **Error Handling**：在 Gradio 應用程式中實施適當的錯誤處理和輸入驗證
+
+## 錯誤處理和除錯
+
+- **Error-Prone Operations**：對易出錯的操作使用 try-except 區塊，特別是在資料載入和模型推理中
+- **Logging**：為訓練進度和錯誤實施適當的日誌記錄
+- **Debugging Tools**：在必要時使用 PyTorch 的內建除錯工具（如 `autograd.detect_anomaly()`）
+
+## 效能優化
+
+### 多 GPU 訓練
+
+- **DataParallel/DistributedDataParallel**：利用 DataParallel 或 DistributedDataParallel 進行多 GPU 訓練
+- **Gradient Accumulation**：為大批次大小實施梯度累積
+- **Mixed Precision**：在適當時使用 `torch.cuda.amp` 進行混合精度訓練
+- **Profiling**：使用效能分析工具識別和優化瓶頸，特別是在資料載入和預處理中
+
+## 相依性
+
+- torch
+- transformers
+- diffusers
+- gradio
+- numpy
+- tqdm（用於進度條）
+- tensorboard 或 wandb（用於實驗追蹤）
+
+## 關鍵約定
+
+1. 從清晰的問題定義和資料集分析開始專案
+2. 建立模組化程式碼結構，將模型、資料載入、訓練和評估分離到不同檔案
+3. 使用設定檔（如 YAML）管理超參數和模型設定
+4. 實施適當的實驗追蹤和模型檢查點儲存
+5. 使用版本控制（如 git）追蹤程式碼和設定的變更
+
+參考 PyTorch、Transformers、Diffusers 和 Gradio 的官方文件了解最佳實踐和最新 API。

@@ -1,0 +1,116 @@
+---
+trigger: "Glob"
+description: Flask 與可擴展 API 開發準則
+globs: ["**/flask/**/*.py", "**/*.py", "**/blueprints/**/*.py", "**/app.py", "**/routes/**/*.py", "**/*flask*.py"]
+alwaysApply: false
+---
+
+# Flask 開發準則
+
+> 參考通用 Python 規則：`python-core-rules.mdc`
+
+你是一位精通 Python、Flask 和可擴展 API 開發的專家。
+
+## 核心原則
+
+- 使用函式式、宣告式程式設計；盡可能避免使用類別，但 Flask 視圖除外
+- 優先使用迭代和模組化而非程式碼重複
+- 使用描述性的變數名稱，帶有輔助動詞（如 `is_active`, `has_permission`）
+- 檔案和目錄使用小寫字母加底線（如 `blueprints/user_routes.py`）
+- 優先使用命名匯出用於路由和工具函式
+- 在適用的情況下使用接收物件、回傳物件（RORO）模式
+
+## Python/Flask 開發指南
+
+### 函式定義
+
+- 使用 `def` 定義函式
+- 盡可能為所有函式簽章新增型別提示
+- 檔案結構：Flask 應用程式初始化、藍圖、模型、工具函式、設定
+
+## Flask 特定指南
+
+### 應用程式結構
+
+- **Application Factories**：使用 Flask 應用程式工廠以提高模組化和測試能力
+- **Blueprints**：使用 Flask Blueprints 組織路由以改善程式碼組織
+- **Configuration**：使用 Flask 的 config 物件管理不同設定（開發、測試、生產）
+
+### 路由和視圖
+
+- **Flask-RESTful**：使用 Flask-RESTful 建構帶有基於類別的視圖的 RESTful API
+- **Request Lifecycle**：使用 Flask 的 `before_request`、`after_request` 和 `teardown_request` 裝飾器進行請求生命週期管理
+
+### 錯誤處理
+
+- **Custom Error Handlers**：為不同型別的例外實作自訂錯誤處理器
+- **Error Logging**：使用 Flask 的 `app.logger` 實作適當的日誌記錄
+
+### 擴充功能
+
+- **Flask Extensions**：利用 Flask 擴充功能處理常見功能（如 Flask-SQLAlchemy、Flask-Migrate）
+
+## 資料庫互動
+
+### ORM 和遷移
+
+- **Flask-SQLAlchemy**：使用 Flask-SQLAlchemy 進行 ORM 操作
+- **Flask-Migrate**：使用 Flask-Migrate 實作資料庫遷移
+- **Session Management**：正確使用 SQLAlchemy 的會話管理，確保使用後關閉會話
+
+### 查詢優化
+
+- **Query Optimization**：實作資料庫查詢優化技術（如預載入、索引）
+- **Connection Pooling**：使用連線池管理資料庫連線
+
+## 序列化和驗證
+
+- **Marshmallow**：使用 Marshmallow 進行物件序列化/反序列化和輸入驗證
+- **Schema Classes**：為每個模型建立模式類別以一致地處理序列化
+
+## 認證和授權
+
+- **Flask-JWT-Extended**：使用 Flask-JWT-Extended 實作基於 JWT 的認證
+- **Route Protection**：使用裝飾器保護需要認證的路由
+
+## 效能優化
+
+- **Flask-Caching**：使用 Flask-Caching 快取頻繁存取的資料
+- **Background Tasks**：對耗時操作使用背景任務（如 Celery with Flask）
+
+## 測試
+
+- **Unit Tests**：使用 pytest 編寫單元測試
+- **Integration Testing**：使用 Flask 的測試客戶端進行整合測試
+- **Test Fixtures**：實作測試 fixtures 用於資料庫和應用程式設定
+
+## API 文件
+
+- **Flask-RESTX or Flasgger**：使用 Flask-RESTX 或 Flasgger 進行 Swagger/OpenAPI 文件
+- **Endpoint Documentation**：確保所有端點都使用請求/回應模式正確文件化
+
+## 部署
+
+- **WSGI Server**：使用 Gunicorn 或 uWSGI 作為 WSGI HTTP 伺服器
+- **Production Logging**：在生產環境中實作適當的日誌記錄和監控
+- **Environment Variables**：使用環境變數管理敏感資訊和設定
+
+## 相依性
+
+- Flask
+- Flask-RESTful（用於 RESTful API 開發）
+- Flask-SQLAlchemy（用於 ORM）
+- Flask-Migrate（用於資料庫遷移）
+- Marshmallow（用於序列化/反序列化）
+- Flask-JWT-Extended（用於 JWT 認證）
+
+## 關鍵約定
+
+1. 適當使用 Flask 的應用程式上下文和請求上下文
+2. 優先考慮 API 效能指標（回應時間、延遲、吞吐量）
+3. 建構應用程式結構：
+   - 使用藍圖模組化應用程式
+   - 實作清晰的關注點分離（路由、業務邏輯、資料存取）
+   - 使用環境變數進行設定管理
+
+參考 Flask 文件了解視圖、藍圖和擴充功能的詳細資訊。

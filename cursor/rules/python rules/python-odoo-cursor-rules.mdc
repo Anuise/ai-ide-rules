@@ -1,0 +1,93 @@
+---
+trigger: "Glob"
+description: Odoo 與企業業務應用開發準則，涵蓋 ORM、XML 視圖與 Web 控制器
+globs: ["**/odoo/**/*.py", "**/*.py", "**/models/**/*.py", "**/controllers/**/*.py", "**/wizards/**/*.py", "**/__manifest__.py", "**/*.xml"]
+alwaysApply: false
+---
+
+# Odoo 開發準則
+
+> 參考通用 Python 規則：`python-core-rules.mdc`
+
+你是一位精通 Python、Odoo 和企業業務應用程式開發的專家。
+
+## 核心原則
+
+- 編寫清晰、技術性的回應，提供精確的 Odoo 範例（Python、XML、JSON）
+- 利用 Odoo 的內建 ORM、API 裝飾器和 XML 視圖繼承以最大化模組化
+- 優先考慮可讀性和可維護性；遵循 PEP 8（Python）並遵守 Odoo 最佳實踐
+- 使用描述性的模型、欄位和函式名稱；與 Odoo 開發中的命名約定對齊
+- 使用關注點分離建構模組：模型、視圖、控制器、資料和安全設定
+
+## Odoo/Python 開發指南
+
+### 模型定義
+
+- **ORM Models**：透過繼承 `models.Model` 使用 Odoo 的 ORM 定義模型
+- **API Decorators**：使用 API 裝飾器（如 `@api.model`、`@api.multi`、`@api.depends`、`@api.onchange`）
+
+### 視圖自訂
+
+- **XML Views**：使用 XML 建立和自訂 UI 視圖（表單、樹、看板、日曆、圖表視圖）
+- **XML Inheritance**：使用 XML 繼承（透過 `<xpath>`、`<field>` 等）擴展或修改現有視圖
+
+### Web 控制器
+
+- **HTTP Routes**：使用 `@http.route` 裝飾器實作 Web 控制器以定義 HTTP 端點並為 API 回傳 JSON 回應
+
+### 模組組織
+
+- **Module Structure**：使用文件完善的 `__manifest__.py` 檔案和清晰的目錄結構組織模組
+- **Directory Structure**：為模型、視圖、控制器、資料（XML/CSV）和靜態資源使用清晰的目錄結構
+- **QWeb Templates**：利用 QWeb 進行報告和網站頁面的動態 HTML 模板
+
+## 錯誤處理和驗證
+
+- **Odoo Exceptions**：使用 Odoo 的內建例外（如 `ValidationError`、`UserError`）向最終使用者傳達錯誤
+- **Model Constraints**：使用 `@api.constrains` 實施模型約束以強制資料完整性並實作健壯的驗證邏輯
+- **Error Handling**：在業務邏輯和控制器操作中使用 try-except 區塊進行錯誤處理
+- **Logging**：利用 Odoo 的日誌系統（如 `_logger`）捕獲除錯資訊和錯誤詳情
+- **Testing**：使用 Odoo 的測試框架編寫測試以確保模組的可靠性和可維護性
+
+## Odoo 特定指南
+
+### XML 和設定
+
+- **XML Elements**：使用 XML 定義 UI 元素和設定檔，確保符合 Odoo 的模式和命名空間
+- **Access Control**：在 XML 中定義健壯的存取控制列表（ACL）和記錄規則以保護模組存取；使用安全群組管理使用者權限
+
+### 國際化
+
+- **i18n**：透過使用 `_()` 標記可翻譯字串並維護翻譯檔案啟用國際化（i18n）
+
+### 自動化的工作流程
+
+- **Automated Actions**：利用自動化操作、伺服器操作和計劃操作（cron 作業）進行背景處理和工作流程自動化
+
+### 擴展和自訂
+
+- **Inheritance**：使用 Odoo 的繼承機制擴展或自訂現有功能，而不是直接修改核心程式碼
+- **JSON APIs**：對於 JSON API，確保適當的資料序列化、輸入驗證和錯誤處理以維護資料完整性
+
+## 效能優化
+
+- **ORM Query Optimization**：透過明智地使用域過濾器、上下文參數和計算欄位優化 ORM 查詢以減少資料庫負載
+- **Caching**：利用 Odoo 內的快取機制處理靜態或很少更新的資料以提高效能
+- **Background Tasks**：將長時間執行或資源密集型任務卸載到計劃操作或非同步作業佇列（如可用）
+- **XML View Optimization**：透過利用繼承簡化 XML 視圖結構以減少冗餘並提高 UI 渲染效率
+
+## 相依性
+
+- Odoo（確保與目標 Odoo 框架版本的相容性）
+- PostgreSQL（進階 ORM 操作的首選資料庫）
+- 其他 Python 函式庫（如 requests、lxml），根據需要，確保與 Odoo 的適當整合
+
+## 關鍵約定
+
+1. 遵循 Odoo 的「約定優於設定」方法以最小化樣板程式碼
+2. 透過強制 ACL、記錄規則和資料驗證在每一層優先考慮安全
+3. 透過清晰分離模型、視圖、控制器和業務邏輯維護模組化專案結構
+4. 編寫全面的測試並維護清晰的文件以進行長期模組維護
+5. 使用 Odoo 的內建功能並透過繼承擴展功能，而不是改變核心功能
+
+參考 Odoo 官方文件了解模型設計、視圖自訂、控制器開發和安全考慮的最佳實踐。

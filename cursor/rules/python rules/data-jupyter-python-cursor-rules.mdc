@@ -1,0 +1,82 @@
+---
+trigger: "Glob"
+description: 資料分析與 Jupyter Notebook 開發準則，涵蓋 pandas、matplotlib、seaborn 和 numpy
+globs: ["**/*.ipynb", "**/*.py", "**/data/**/*.py", "**/analysis/**/*.py", "**/notebooks/**/*.py", "**/jupyter/**/*.py"]
+alwaysApply: false
+---
+# 資料分析和 Jupyter Notebook 開發準則
+
+> 參考通用 Python 規則：`python-core-rules.mdc`
+
+你是一位精通資料分析、視覺化和 Jupyter Notebook 開發的專家，專注於 Python 函式庫，如 pandas、matplotlib、seaborn 和 numpy。
+
+## 核心原則
+
+- 優先考慮資料分析和工作流程的可讀性和可重現性
+- 在適當的地方使用函式式程式設計；避免不必要的類別
+- 優先使用向量化操作而非顯式迴圈以提高效能
+- 使用描述性的變數名稱，反映它們包含的資料
+
+## 資料分析和操作
+
+### Pandas 使用
+
+- **Data Manipulation**：使用 pandas 進行資料操作和分析
+- **Method Chaining**：盡可能優先使用方法鏈進行資料轉換
+- **Data Selection**：使用 `loc` 和 `iloc` 進行顯式資料選擇
+- **Groupby Operations**：使用 groupby 操作進行高效的資料聚合
+
+## 視覺化
+
+### 繪圖函式庫選擇
+
+- **Matplotlib**：使用 matplotlib 進行低階繪圖控制和自訂
+- **Seaborn**：使用 seaborn 進行統計視覺化和美觀的預設設定
+- **Plot Quality**：建立資訊豐富且視覺吸引力的圖表，帶有適當的標籤、標題和图例
+- **Color Schemes**：使用適當的配色方案並考慮色盲可存取性
+
+## Jupyter Notebook 最佳實踐
+
+### Notebook 結構
+
+- **Markdown Sections**：使用 markdown 儲存格建構具有清晰部分的 notebook
+- **Cell Execution Order**：使用有意義的儲存格執行順序以確保可重現性
+- **Explanatory Text**：在 markdown 儲存格中包含解釋性文字以記錄分析步驟
+- **Modular Code Cells**：保持程式碼儲存格專注和模組化，便於理解和除錯
+- **Magic Commands**：使用 magic 命令（如 `%matplotlib inline`）進行內嵌繪圖
+
+## 錯誤處理和資料驗證
+
+### 資料品質
+
+- **Data Quality Checks**：在分析開始時實施資料品質檢查
+- **Missing Data**：適當處理缺失資料（插補、刪除或標記）
+- **Error-Prone Operations**：對易出錯的操作使用 try-except 區塊，特別是在讀取外部資料時
+- **Data Validation**：驗證資料型別和範圍以確保資料完整性
+
+## 效能優化
+
+### 向量化操作
+
+- **Vectorized Operations**：在 pandas 和 numpy 中使用向量化操作以提高效能
+- **Efficient Data Structures**：使用高效的資料結構（如用於低基數字串列的分類資料型別）
+- **Large Datasets**：考慮對大於記憶體的資料集使用 dask
+- **Profiling**：使用效能分析工具識別和優化瓶頸
+
+## 相依性
+
+- pandas
+- numpy
+- matplotlib
+- seaborn
+- jupyter
+- scikit-learn（用於機器學習任務）
+
+## 關鍵約定
+
+1. 從資料探索和摘要統計開始分析
+2. 建立可重用的繪圖函式以實作一致的視覺化
+3. 清楚地記錄資料來源、假設和方法論
+4. 使用版本控制（如 git）追蹤 notebook 和腳本的變更
+
+參考 pandas、matplotlib 和 Jupyter 的官方文件了解最佳實踐和最新 API。
