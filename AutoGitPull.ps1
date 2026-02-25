@@ -1,14 +1,11 @@
-# 1. 強制設定編碼 (解決外部程式如 Git 的輸出亂碼)
-$OutputEncoding = [System.Text.Encoding]::UTF8
-[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
-
-# 2. 設定 PowerShell 內建指令的預設編碼
+# 1. 在最上方設定全域預設編碼 (PowerShell 5.1/7+ 適用)
 $PSDefaultParameterValues['Out-File:Encoding'] = 'utf8'
 $PSDefaultParameterValues['Add-Content:Encoding'] = 'utf8'
+$OutputEncoding = [System.Text.Encoding]::UTF8 # 確保與外部程式 (Git) 溝通時也使用 UTF8
 
 # 設定日誌資料夾
 $logDir = Join-Path $PSScriptRoot "log"
-if (!(Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir -Force }
+if (!(Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir }
 
 # 產生檔案名稱
 $logFile = Join-Path $logDir "$((Get-Date).ToString('yyyy-MM-dd'))_git_pull.log"
@@ -27,7 +24,7 @@ foreach ($path in $repoPaths) {
         Add-Content $logFile "[$((Get-Date).ToString('HH:mm:ss'))] 正在更新: $path"
         Set-Location -Path $path
         
-        # 執行 git pull (2>&1 確保錯誤訊息也能正確編碼寫入)
+        # 執行 git pull
         git pull 2>&1 | Out-File $logFile -Append
         
         Add-Content $logFile "------------------------------------"
