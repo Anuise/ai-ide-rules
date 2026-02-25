@@ -1,30 +1,39 @@
-# è¨­å®šæ—¥èªŒè³‡æ–™å¤¾
-$logDir = Join-Path $PSScriptRoot "log"
-if (!(Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir }
+# 1. ±j¨î³]©w½s½X (¸Ñ¨M¥~³¡µ{¦¡¦p Git ªº¿é¥X¶Ã½X)
+$OutputEncoding = [System.Text.Encoding]::UTF8
+[Console]::OutputEncoding = [System.Text.Encoding]::UTF8
 
-# ç”¢ç”Ÿæª”æ¡ˆåç¨± (ä¾‹å¦‚: 2026-02-11_git_pull.log)
+# 2. ³]©w PowerShell ¤º«Ø«ü¥Oªº¹w³]½s½X
+$PSDefaultParameterValues['Out-File:Encoding'] = 'utf8'
+$PSDefaultParameterValues['Add-Content:Encoding'] = 'utf8'
+
+# ³]©w¤é»x¸ê®Æ§¨
+$logDir = Join-Path $PSScriptRoot "log"
+if (!(Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir -Force }
+
+# ²£¥ÍÀÉ®×¦WºÙ
 $logFile = Join-Path $logDir "$((Get-Date).ToString('yyyy-MM-dd'))_git_pull.log"
 
-# å®šç¾©æ‰€æœ‰éœ€è¦æ›´æ–°çš„è³‡æ–™å¤¾è·¯å¾‘
+# ©w¸q¸ô®|
 $repoPaths = @(
     "C:\Users\User\.gemini\skills",
     "C:\Users\User\.cursor\skills"
 )
 
-# è¨˜éŒ„é–‹å§‹æ™‚é–“
-"--- å•Ÿå‹•æ›´æ–°: $((Get-Date).ToString()) ---" | Out-File $logFile -Append
+# ±Ò°Ê§ó·s
+"--- ±Ò°Ê§ó·s: $((Get-Date).ToString()) ---" | Out-File $logFile -Append
 
 foreach ($path in $repoPaths) {
     if (Test-Path "$path\.git") {
-        Add-Content $logFile "[$((Get-Date).ToString('HH:mm:ss'))] æ­£åœ¨æ›´æ–°: $path"
+        Add-Content $logFile "[$((Get-Date).ToString('HH:mm:ss'))] ¥¿¦b§ó·s: $path"
         Set-Location -Path $path
         
-        # åŸ·è¡Œ git pull ä¸¦å°‡æ¨™æº–è¼¸å‡ºèˆ‡éŒ¯èª¤è¨Šæ¯éƒ½å°å‘ log
-        git pull >> $logFile 2>&1
+        # °õ¦æ git pull (2>&1 ½T«O¿ù»~°T®§¤]¯à¥¿½T½s½X¼g¤J)
+        git pull 2>&1 | Out-File $logFile -Append
+        
         Add-Content $logFile "------------------------------------"
     } else {
-        Add-Content $logFile "[$((Get-Date).ToString('HH:mm:ss'))] éŒ¯èª¤: $path ä¸æ˜¯æœ‰æ•ˆçš„ Git å€‰åº«"
+        Add-Content $logFile "[$((Get-Date).ToString('HH:mm:ss'))] ¿ù»~: $path ¤£¬O¦³®Äªº Git ­Ü®w"
     }
 }
 
-"--- æ›´æ–°çµæŸ: $((Get-Date).ToString()) ---" | Out-File $logFile -Append
+"--- §ó·sµ²§ô: $((Get-Date).ToString()) ---" | Out-File $logFile -Append

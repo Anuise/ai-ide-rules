@@ -1,5 +1,5 @@
 # =================================================================
-# é…ç½®å€åŸŸï¼šåœ¨æ­¤æ–°å¢æˆ–ä¿®æ”¹ä½ æƒ³è¦æ’é™¤çš„è³‡æ–™å¤¾æˆ–æª”æ¡ˆ
+# °t¸m°Ï°ì¡G¦b¦¹·s¼W©Î­×§ï§A·Q­n±Æ°£ªº¸ê®Æ§¨©ÎÀÉ®×
 # =================================================================
 $GlobalExcludeList = @(
     ".cursor/", 
@@ -7,25 +7,25 @@ $GlobalExcludeList = @(
 )
 
 # =================================================================
-# è‡ªå‹•åŒ–å®‰è£é‚è¼¯
+# ¦Û°Ê¤Æ¦w¸ËÅŞ¿è
 # =================================================================
 $hookDir = "$HOME\git-hooks"
 $logicScript = "$hookDir\exclude_rules.ps1"
 $hooks = @("post-checkout", "pre-commit")
 
-# 1. å»ºç«‹æ›é‰¤ç›®éŒ„
+# 1. «Ø¥ß±¾¹_¥Ø¿ı
 if (-not (Test-Path $hookDir)) {
     New-Item -Path $hookDir -ItemType Directory -Force | Out-Null
 }
 
-# 2. å°è£æ’é™¤é‚è¼¯è‡³æ ¸å¿ƒè…³æœ¬
+# 2. «Ê¸Ë±Æ°£ÅŞ¿è¦Ü®Ö¤ß¸}¥»
 $excludeItemsString = ($GlobalExcludeList | ForEach-Object { "'$_'" }) -join ", "
 
 $logicContent = @"
-# è‡ªå‹•ç”¢ç”Ÿçš„æ’é™¤æ¸…å–®
+# ¦Û°Ê²£¥Íªº±Æ°£²M³æ
 `$excludePaths = @($excludeItemsString)
 
-# å–å¾—ç›®å‰ Git å°ˆæ¡ˆæ ¹ç›®éŒ„
+# ¨ú±o¥Ø«e Git ±M®×®Ú¥Ø¿ı
 `$gitRoot = git rev-parse --show-toplevel 2>`$null
 if (-not `$gitRoot) { exit }
 
@@ -33,37 +33,37 @@ if (-not `$gitRoot) { exit }
 `$excludeFile = "`$gitRoot\.git\info\exclude"
 
 if (Test-Path "`$gitRoot\.git") {
-    # ç¢ºä¿æ’é™¤æª”æ¡ˆå­˜åœ¨ï¼Œé¿å… Select-String å ±éŒ¯
+    # ½T«O±Æ°£ÀÉ®×¦s¦b¡AÁ×§K Select-String ³ø¿ù
     if (-not (Test-Path `$excludeFile)) {
         New-Item -Path `$excludeFile -ItemType File -Force | Out-Null
     }
 
     foreach (`$path in `$excludePaths) {
-        # A. å¯«å…¥æœ¬åœ°æ’é™¤æ–‡ä»¶
-        # ä¿®æ­£é»ï¼šå°‡ Regex è™•ç†çµæœå­˜å…¥è®Šæ•¸ï¼Œç¢ºä¿ Select-String åƒæ•¸æ­£ç¢º
+        # A. ¼g¤J¥»¦a±Æ°£¤å¥ó
+        # ­×¥¿ÂI¡G±N Regex ³B²zµ²ªG¦s¤JÅÜ¼Æ¡A½T«O Select-String °Ñ¼Æ¥¿½T
         `$escapedPath = [Regex]::Escape(`$path)
         `$alreadyExists = Select-String -Path `$excludeFile -Pattern `$escapedPath -Quiet
         
         if (-not `$alreadyExists) {
             Add-Content -Path `$excludeFile -Value "`n`# Auto-added IDE Rules`n`$path"
-            Write-Host "Local: å·²å°‡ `$path åŠ å…¥æ’é™¤æ¸…å–®" -ForegroundColor Green
+            Write-Host "Local: ¤w±N `$path ¥[¤J±Æ°£²M³æ" -ForegroundColor Green
         }
 
-        # B. å¾ Git å¿«å–ä¸­ç§»é™¤
+        # B. ±q Git §Ö¨ú¤¤²¾°£
         Set-Location `$gitRoot
         `$isTracked = git ls-files `$path
         if (`$isTracked) {
             git rm -r --cached `$path --ignore-unmatch 2>`$null
-            Write-Host "Cache: åµæ¸¬åˆ° `$path å·²è¢«è¿½è¹¤ï¼Œå·²å¾ç´¢å¼•ç§»é™¤" -ForegroundColor Yellow
+            Write-Host "Cache: °»´ú¨ì `$path ¤w³Q°lÂÜ¡A¤w±q¯Á¤Ş²¾°£" -ForegroundColor Yellow
         }
     }
 }
 "@
 
 Set-Content -Path $logicScript -Value $logicContent -Encoding UTF8
-Write-Host "æ ¸å¿ƒé‚è¼¯å·²æ›´æ–°æ–¼: $logicScript" -ForegroundColor Cyan
+Write-Host "®Ö¤ßÅŞ¿è¤w§ó·s©ó: $logicScript" -ForegroundColor Cyan
 
-# 3. å»ºç«‹ Git Hook åŒ…è£å™¨ (Shell æ ¼å¼)
+# 3. «Ø¥ß Git Hook ¥]¸Ë¾¹ (Shell ®æ¦¡)
 foreach ($hookName in $hooks) {
     $hookPath = Join-Path $hookDir $hookName
     $hookContent = @"
@@ -73,11 +73,11 @@ powershell.exe -ExecutionPolicy Bypass -File "$($logicScript.Replace('\', '/'))"
     Set-Content -Path $hookPath -Value $hookContent -Encoding ascii
 }
 
-# 4. é…ç½® Git å…¨åŸŸè¨­å®š
+# 4. °t¸m Git ¥ş°ì³]©w
 git config --global core.hooksPath "$($hookDir.Replace('\', '/'))"
 
-# 5. ç«‹å³åŸ·è¡Œä¸€æ¬¡åˆå§‹åŒ–
-Write-Host "æ­£åœ¨å°ç•¶å‰å°ˆæ¡ˆåŸ·è¡Œé¦–æ¬¡æƒæ..." -ForegroundColor Magenta
+# 5. ¥ß§Y°õ¦æ¤@¦¸ªì©l¤Æ
+Write-Host "¥¿¦b¹ï·í«e±M®×°õ¦æ­º¦¸±½´y..." -ForegroundColor Magenta
 & $logicScript
 
-Write-Host "`n[å®‰è£æˆåŠŸ] å…¨åŸŸè‡ªå‹•æ’é™¤æ©Ÿåˆ¶å·²å•Ÿå‹•ã€‚" -ForegroundColor White -BackgroundColor DarkGreen
+Write-Host "`n[¦w¸Ë¦¨¥\] ¥ş°ì¦Û°Ê±Æ°£¾÷¨î¤w±Ò°Ê¡C" -ForegroundColor White -BackgroundColor DarkGreen
