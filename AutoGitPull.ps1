@@ -1,36 +1,76 @@
-# 1. ¦b³Ì¤W¤è³]©w¥þ°ì¹w³]½s½X (PowerShell 5.1/7+ ¾A¥Î)
+# AutoGitPull.ps1 - Update antigravity-awesome-skills
+$utf8 = [System.Text.UTF8Encoding]::new($false)
 $PSDefaultParameterValues['Out-File:Encoding'] = 'utf8'
-$PSDefaultParameterValues['Add-Content:Encoding'] = 'utf8'
-$OutputEncoding = [System.Text.Encoding]::UTF8 # ½T«O»P¥~³¡µ{¦¡ (Git) ·¾³q®É¤]¨Ï¥Î UTF8
+[Console]::InputEncoding = $utf8
+[Console]::OutputEncoding = $utf8
+$OutputEncoding = $utf8
 
-# ³]©w¤é»x¸ê®Æ§¨
-$logDir = Join-Path $PSScriptRoot "log"
-if (!(Test-Path $logDir)) { New-Item -ItemType Directory -Path $logDir }
+# Variables
+$repoPath = $PSScriptRoot
+$logFile  = Join-Path $repoPath "logs\AutoGitPull.log"
+$logDir   = Split-Path -Parent $logFile
 
-# ²£¥ÍÀÉ®×¦WºÙ
-$logFile = Join-Path $logDir "$((Get-Date).ToString('yyyy-MM-dd'))_git_pull.log"
+# Helper: write to console + log
+function Write-Log {
+    param([string]$Message)
+    $timestamp = (Get-Date).ToString("yyyy-MM-dd HH:mm:ss")
+    $line = "[$timestamp] $Message"
+    Write-Host $line
+    Add-Content -Path $logFile -Value $line -Encoding UTF8
+}
 
-# ©w¸q¸ô®|
-$repoPaths = @(
-    "C:\Users\User\.gemini\skills",
-    "C:\Users\User\.cursor\skills"
+if (-not (Test-Path -Path $logDir)) {
+    New-Item -ItemType Directory -Path $logDir -Force | Out-Null
+}
+
+# Update targets
+$updateTargets = @(
+    "--cursor"
+    "--antigravity"
+    # "--claude"             # å–æ¶ˆè¨»è§£å¯å•Ÿç”¨
 )
 
-# ±Ò°Ê§ó·s
-"--- ±Ò°Ê§ó·s: $((Get-Date).ToString()) ---" | Out-File $logFile -Append
+# Ensure working directory
+if (-not (Test-Path (Join-Path $repoPath ".git"))) {
+    Write-Log "Warning: $repoPath is not a Git repository. Continue anyway."
+}
 
-foreach ($path in $repoPaths) {
-    if (Test-Path "$path\.git") {
-        Add-Content $logFile "[$((Get-Date).ToString('HH:mm:ss'))] ¥¿¦b§ó·s: $path"
-        Set-Location -Path $path
-        
-        # °õ¦æ git pull
-        git pull 2>&1 | Out-File $logFile -Append
-        
-        Add-Content $logFile "------------------------------------"
-    } else {
-        Add-Content $logFile "[$((Get-Date).ToString('HH:mm:ss'))] ¿ù»~: $path ¤£¬O¦³®Äªº Git ­Ü®w"
+Set-Location -Path $repoPath
+
+Write-Log "===== Start updating antigravity-awesome-skills ====="
+
+# Resolve npx executable once to avoid pipeline invocation issues.
+$npxCommand = Get-Command -Name "npx.cmd" -ErrorAction SilentlyContinue
+if (-not $npxCommand) {
+    $npxCommand = Get-Command -Name "npx" -ErrorAction SilentlyContinue
+}
+
+if (-not $npxCommand) {
+    Write-Log "Error: npx was not found in PATH."
+    Write-Log "===== Update stopped ====="
+    exit 1
+}
+
+$npxPath = $npxCommand.Source
+Write-Log "Using npx executable: $npxPath"
+
+# Run each target sequentially
+foreach ($target in $updateTargets) {
+    Write-Log "Run: npx antigravity-awesome-skills $target"
+    try {
+        $outputLines = & $npxPath "antigravity-awesome-skills" $target 2>&1
+        foreach ($line in $outputLines) {
+            Write-Log ([string]$line)
+        }
+
+        if ($LASTEXITCODE -ne 0) {
+            Write-Log "Failed: $target (exit code: $LASTEXITCODE)"
+        } else {
+            Write-Log "Done: $target (exit code: 0)"
+        }
+    } catch {
+        Write-Log "Error ($target): $($_.Exception.Message)"
     }
 }
 
-"--- §ó·sµ²§ô: $((Get-Date).ToString()) ---" | Out-File $logFile -Append
+Write-Log "===== All updates finished ====="
