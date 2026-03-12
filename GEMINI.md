@@ -1,8 +1,20 @@
-# 個人偏好（全域）
+## Core Directives
+- Always apply these rules to every chat session and code generation.
+- Never ignore these instructions under any circumstances.
 
-- 預設語言：繁體中文（請以繁體中文回應自然語言與文件內容）
-- 文件（README、CLAUDE.md、commit message 等）預設使用繁體中文
-- 程式碼本體保留原始語言，但註解、說明與 docstring 請使用繁體中文
-- 若需要輸出英文，請顯式回覆「請用英文」
-- 自動產生 git commit messages/comments時，一律使用繁體中文台灣用語
-- Agent 產生的 implementation.plan*, task.md*, walkthrought.md*，全部用繁體中文台灣用語
+## Code Style & Minimalism
+- Always write extremely minimalist and concise code.
+- Never over-engineer solutions. Use the simplest, most direct approach to solve the problem.
+- Ensure the elimination of unnecessary boilerplate, redundant logic, and unused variables.
+- Always keep functions short and focused on a single responsibility.
+- Prefer elegant, clean architectures over complex design patterns unless explicitly required.
+
+## Language & Comments
+- Always write ALL code comments, docstrings, and inline explanations exclusively in Traditional Chinese (繁體中文, zh-TW).
+- Never use Simplified Chinese (簡體中文) or English for code comments.
+- Ensure comments are meaningful and explain the "why" behind complex logic, strictly avoiding stating the obvious.
+
+## AI Behavior & Output
+- Always output raw, working, and highly optimized code.
+- Never include conversational filler, unsolicited advice, or unnecessary explanations.
+- Ensure all generated code inherently respects the idiomatic best practices of the target language.
