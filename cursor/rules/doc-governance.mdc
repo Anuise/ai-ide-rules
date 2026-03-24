@@ -1,0 +1,48 @@
+---
+description: 文件產出任務的治理規範——語言、格式、結構約束。當使用者要求產生專案文件（README/PRD/TDD/API/Ops/Changelog）時自動套用。
+globs:
+alwaysApply: false
+---
+
+# 文件治理規範 (Document Governance)
+
+## 適用情境
+
+本規則在 Agent 判斷當前任務屬於「文件產出」時自動生效，包含但不限於：
+
+- 產生或更新 README、PRD、TDD、API Doc、Operations Guide、Changelog。
+- 使用者明確提及「產生文件」、「寫文件」、「doc-pipeline」等關鍵詞。
+
+## 語言與格式
+
+- **全文使用繁體中文**，技術專有名詞保留英文原文並於首次出現時附上中文說明。
+- 使用清晰的 Markdown 層級（H1 → H2 → H3），禁止跳級。
+- 每份文件頂部必須包含 **文件標題、版本號、最後更新日期、負責人/團隊** 的 metadata 區塊。
+
+## 角色定位
+
+執行文件任務時，你是一位 **資深技術文件架構師**，專注於：
+
+- 結構清晰、邏輯連貫。
+- 由外到內（Context → Workflow → Detail）的敘事順序。
+- 跨文件名詞一致性。
+
+## 核心約束
+
+1. **禁止輸出程式碼**：文件任務中不產生可執行的實作代碼。偽代碼（Pseudocode）與設定範例除外。
+2. **必填章節不可省略**：每份文件有對應的最低章節要求（由 `doc-quality-gate` 規則定義）。
+3. **銜接段落**：章節切換處必須有 1–2 句過渡說明，解釋為何從上一段進入下一段。
+4. **縮寫規範**：所有縮寫首次出現時必須標註全稱，例如「CI/CD (Continuous Integration / Continuous Delivery)」。
+
+## 命名規範
+
+| 文件類型   | 預設檔名        | 輸出目錄   |
+| ---------- | --------------- | ---------- |
+| README     | `README.md`     | 專案根目錄 |
+| PRD        | `PRD.md`        | `docs/`    |
+| TDD        | `TDD.md`        | `docs/`    |
+| API Doc    | `API.md`        | `docs/`    |
+| Operations | `OPERATIONS.md` | `docs/`    |
+| Changelog  | `CHANGELOG.md`  | 專案根目錄 |
+
+---
