@@ -23,7 +23,7 @@ function Write-Log {
     Add-Content -Path $logFile -Value $line -Encoding UTF8
 }
 
-function Ensure-Directory {
+function New-Directory {
     param([string]$Path)
 
     if (-not (Test-Path -LiteralPath $Path)) {
@@ -81,12 +81,12 @@ function Sync-Path {
     }
 
     if ($sourceIsDirectory) {
-        Ensure-Directory -Path $Destination
+        New-Directory -Path $Destination
         Sync-DirectoryContents -SourceDir $Source -DestinationDir $Destination
         return
     }
 
-    Ensure-Directory -Path (Split-Path -Parent $Destination)
+    New-Directory -Path (Split-Path -Parent $Destination)
     Copy-Item -LiteralPath $Source -Destination $Destination -Force
 }
 
@@ -96,7 +96,7 @@ function Sync-DirectoryContents {
         [string]$DestinationDir
     )
 
-    Ensure-Directory -Path $DestinationDir
+    New-Directory -Path $DestinationDir
 
     $sourceItems = @(Get-ChildItem -LiteralPath $SourceDir -Force)
     $sourceMap = @{}
@@ -140,7 +140,7 @@ function Install-RepoToTarget {
         Write-Log "  Creating install at $TargetPath..."
     }
 
-    Ensure-Directory -Path $TargetPath
+    New-Directory -Path $TargetPath
 
     $repoSkills = Join-Path $SourceRoot "skills"
     if (-not (Test-Path -LiteralPath $repoSkills)) {
@@ -187,7 +187,7 @@ $tempRoot = Join-Path ([System.IO.Path]::GetTempPath()) ("ag-skills-" + [guid]::
 $tempRepo = Join-Path $tempRoot "repo"
 
 try {
-    Ensure-Directory -Path $tempRoot
+    New-Directory -Path $tempRoot
     Write-Log "Cloning latest repository..."
     $cloneOutput = & $gitPath clone --depth 1 $repoUrl $tempRepo 2>&1
     foreach ($line in $cloneOutput) {

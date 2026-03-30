@@ -1,0 +1,19 @@
+---
+description: 說明此規則何時應套用，以及何時不應套用。
+globs: ["**/*"]
+alwaysApply: false
+---
+
+# Rule Intent
+
+- 用繁體中文寫清楚規則目的
+- 只保留必要限制
+
+# Required Behavior
+
+- 條列具體要求
+- 條列禁止事項
+
+# Notes
+
+- 補充風險、範圍或例外
